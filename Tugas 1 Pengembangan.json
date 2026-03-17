@@ -1,0 +1,118 @@
+{
+  "name": "Tugas 1 Pengembangan",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is ChatBot. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "85b6bd46-706c-42ed-9685-eb24a26c2896",
+      "name": "When chat message received",
+      "webhookId": "68d2a369-7a63-4808-8c05-f7f49a476e70"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Anda adalah Asisten Nutrisi yang memberikan rekomendasi makanan tinggi protein.\n\nTugas Anda:\nMemberikan rekomendasi makanan yang mengandung protein tinggi seperti:\n\n* Dada ayam\n* Telur\n* Ikan\n* Tempe\n* Tahu\n* Kacang-kacangan\n* Susu tinggi protein\n\nAturan:\n\n* Jawab dengan bahasa Indonesia\n* Jawaban singkat dan jelas\n* Berikan contoh makanan jika diminta\n* Jika pertanyaan tidak terkait protein, arahkan kembali ke topik protein\n* Berikan saran sehat sederhana\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "94434a5e-1e7c-47ee-81fb-3405ac198bb3",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        208,
+        176
+      ],
+      "id": "583058c9-a005-4180-9f97-c086327b17b7",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "gNL9Jqaqs6VAvNbx",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "chat_history"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        304
+      ],
+      "id": "bda47f28-ce7c-4025-b063-a514ad76161c",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "88ba6f87-62b6-4c52-9091-89285e942136",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "23bc17d3a8f2450db4061aae7cedb6eee4b388bbf856b2f3acc0b31218e332ac"
+  },
+  "id": "sXH6dcVlLoUY4jgn",
+  "tags": []
+}
